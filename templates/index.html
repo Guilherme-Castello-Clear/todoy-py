@@ -145,8 +145,8 @@
     </head>
     <body>
         <div class="todo-app">
-          <form class="input-section">
-            <input id="todoInput" type="text" placeholder="Add item..." />
+          <form class="input-section" action="{{ url_for('add') }}" method="POST">
+            <input name="title" id="todoInput" type="text" placeholder="Add item..." />
             <button id="addBtn" type="submit" class="add">Add</button>
             <button
               type="button"
