@@ -141,11 +141,14 @@
               transform: translate(-50%, -50%);
               opacity: 30%;
             }
+            .done{
+              background-color: 'red'
+            }
         </style>
     </head>
     <body>
         <div class="todo-app">
-          <form class="input-section" action="{{ url_for('add') }}" method="POST">
+          <form class="input-section" action="add" method="POST">
             <input name="title" id="todoInput" type="text" placeholder="Add item..." />
             <button id="addBtn" type="submit" class="add">Add</button>
             <button
@@ -159,14 +162,21 @@
           </form>
           <div class="todos">
             <ul class="todo-list">
-              <!-- <li class="li">
-              <input class="form-check-input" type="checkbox" value="option1">
-              <label class="form-check-label" for="inlineCheckbox1"></label>
-              <span class="todo-text">text</span>
-              <span class="todo-text">date</span>
-              <span class="span-button"><i class="fa-solid fa-trash"></i></span>
-              <span class="span-button"><i class="fa-solid fa-pen"></i></span>
-            </li> -->
+                {% if tasks == []: %}
+                    <p>No tasks found</p>
+                {% endif %}
+                {% for task in tasks %}
+                    <li class="li">
+                        <form action="done" method="POST">
+                            {% if not task.is_done %}
+                                <button type="submit" name="id" value="{{ task.id }}">Complete</button>
+                            {% else %}
+                                <button type="submit" name="id" value="{{ task.id }}" disabled >Complete</button>
+                            {% endif %}
+                            <span class="todo-text">{{task.title}}</span>
+                        </form>
+                    </li>
+                {% endfor %}
             </ul>
             <!--
             <img class="face" src="assets/thinking.png" alt="">

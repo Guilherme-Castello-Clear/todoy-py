@@ -22,22 +22,28 @@ with app.app_context():
 	db.create_all()
 
 
-@app.route("/")
+@app.route('/done', methods=['POST'])
+def done():
+	update_task = db.get_or_404(Tasks, request.form.get('id'))
+	update_task.is_done = True
+	db.session.commit()
+	return redirect('/')
+
+
+@app.route('/')
 def home():
-    return render_template("index.html")
+	tasks = Tasks.query.all()
+	return render_template("index.html", tasks=tasks)
 
 
 @app.route("/add", methods=['POST', 'GET'])
 def new_task():
-    # tasks = Tasks.query.all()
     add_task = Tasks(
         title=request.form.get('title')
     )
     db.session.add(add_task)
     db.session.commit()
-    return 'ok'
-    # print(tasks)
-    # return render_template('index.html')
+    return redirect('/')
 
 
 if __name__ == '__main__':
